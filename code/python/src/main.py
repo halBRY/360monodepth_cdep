@@ -18,6 +18,7 @@ from utility import blending
 from utility import serialization
 from utility import projection_icosahedron as proj_ico
 from utility import MAIN_DATA_DIR
+from utility import cdep_utils
 
 from utility.logger import Logger
 
@@ -491,13 +492,18 @@ def monodepth_360(opt):
 
             serialization.save_predictions(output_folder, erp_gt_depthmap, erp_rgb_image_data, estimated_depthmap,
                                            opt.persp_monodepth, idx=idx)
+            
+            newMap, newMapArr = cdep_utils.rescale(erp_rgb_image_data, estimated_depthmap, opt.persp_monodepth, idx=idx)
+            cdep_utils.visualize_real_map(output_folder, newMap)
 
+            cdep_utils.list2bin(output_folder, newMapArr)
+            '''
             if opt.grid_search:
                 metrics_list.append(list(weights) + [item for dic in pred_metrics for item in dic.values()])
             else:
                 serialization.save_metrics(output_results_file, pred_metrics, times, times_header,
                                            idx, list(estimated_depthmap.keys()))
-
+            '''
             # Remove temporal storage folder
             if opt.rm_debug_folder and os.path.isdir(debug_output_dir):
                 shutil.rmtree(debug_output_dir)

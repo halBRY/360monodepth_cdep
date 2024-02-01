@@ -1,0 +1,5 @@
+python3 main.py --expname <name_of_results_dir> --blending_method all --grid_size 8x7 --data ../../../data/EVL_Room_360_data.txt 
+
+notes:
+* name of .depth file MUST be changed manually in main.py
+* the EVL_Room_360_data.txt file can only contain one image at a time due to how I wrote my cdep_utils.py functions.

@@ -2,7 +2,7 @@
 # create docker container with image: docker run --name=mzy22_monodepth -e COLUMNS=300 --mount type=bind,source="$(pwd)",target=/monodepth_dev -it --gpus all mzy22/monodepth:v1.0
 
 # ubuntu 20.04/cuda
-FROM nvidia/cuda:11.4.2-devel-ubuntu20.04
+FROM nvidia/cuda:12.3.1-base-ubuntu20.04
 # FROM alpine:3.4
 
 #-- setup building environment 
@@ -44,6 +44,8 @@ RUN wget https://github.com/isl-org/MiDaS/releases/download/v2_1/model-f6b98070.
 RUN wget -P ./BoostingMonocularDepth/pix2pix/checkpoints/mergemodel https://www.sfu.ca/~yagiz/CVPR21/latest_net_G.pth
 
 RUN pip3 install -r ./code/python/requirements.txt
+
+RUN pip install numpy==1.20 
 
 #-- build python cpp module
 # 1) build the cpp project

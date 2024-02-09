@@ -17,8 +17,8 @@ def rescale(erp_rgb_image_data, estimated_depthmap, persp_monodepth, idx):
     val_far = myMap[int(height/2)][int(width/2)]
     val_left = myMap[int(height/2)][int(width/4)]
 
-    far_real = 1.8
-    left_real = 1.095
+    far_real = 1.11 #B: 1.72 C:1.49
+    left_real = 1.32 #B: 0.71 C:1.095
 
     newDepthMap = []
     depthBuffer = []
@@ -26,8 +26,13 @@ def rescale(erp_rgb_image_data, estimated_depthmap, persp_monodepth, idx):
     for row in myMap:
         myRow = []
         for col in row:
-            depth_norm = (col - val_left) / (val_far - val_left)
-            depth_real = depth_norm * (far_real - left_real) + left_real
+            if(val_far > val_left):
+                depth_norm = (col - val_left) / (val_far - val_left)
+                depth_real = depth_norm * (far_real - left_real) + left_real
+
+            elif(val_left > val_far):
+                depth_norm = (col - val_far) / (val_left - val_far)
+                depth_real = depth_norm * (left_real - far_real) + far_real
 
             myRow.append(depth_real)
             depthBuffer.append(np.float32(depth_real))
